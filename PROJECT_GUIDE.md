@@ -5,7 +5,7 @@ The marketing site for **Custom Software Developers**: custom websites, AI apps 
 
 ## Stack
 - Angular 22: standalone components, OnPush, signals, zoneless, lazy-loaded routes.
-- SSR + **prerendering** of all 12 routes (`outputMode: server`, `RenderMode.Prerender` in `app.routes.server.ts`). The 404 is served by the Node server (`src/server.ts`).
+- Static site: every route is **prerendered** at build time (`outputMode: static`, `RenderMode.Prerender` in `app.routes.server.ts`), hosted on Cloudflare Pages. 404 = prerendered `/404` page saved as `404.html`.
 - SCSS. Fonts are self-hosted via @fontsource: Plus Jakarta Sans (display), Inter (body), JetBrains Mono (receipt, code, labels), Instrument Serif italic (the "dream" line).
 - Design brief: `D:\New Folder\claude.md` (CLAUDE.md). Owner changes to it: accent is WARM AMBER (#F2A33A) instead of Laser Crimson; hero keeps the existing
   heading "You dream it. We engineer it."; the hero right side is the "live build" tab panel instead of a voice-wave sculpture; hero keeps a toned-down background photo.
@@ -57,12 +57,12 @@ public/img/                        photos, Seettu Pro images, logo files
 ```
 
 ## Commands
-Project folder: F:\rea-project\csd-web (run npm install on Windows; node_modules is not committed)
+Project folder: D:\New Folder\csd-web (run npm install on Windows; node_modules is not committed)
 ```
 npm install
 npx ng serve            # dev, http://localhost:4200
-npx ng build            # prerendered output in dist/csd-web/browser (+ server)
-node dist/csd-web/server/server.mjs   # run SSR server (serves 404 properly), port 4000
+npm run build           # static output in dist/csd-web/browser (ng build + scripts/postbuild.mjs)
+npx serve dist/csd-web/browser       # preview the static build locally (clean URLs + 404.html)
 ```
 
 ## Motion notes
@@ -79,6 +79,14 @@ node dist/csd-web/server/server.mjs   # run SSR server (serves 404 properly), po
 ## Slogans
 - Header: "Build now. Grow forever." (SITE.slogan) under the wordmark via `<app-brand-logo [slogan]>`; small mono caps, hidden at 480px and below.
 - Footer: "If you can imagine it, we can build it." (SITE.footerSlogan; written in site-footer.html with "we can build it." in amber, kept on one line).
+
+## Hosting and domain
+- Domain: customsoftwaredevelopers.in (bought at Spaceship, 26 Nov 2026). Nameservers point to Cloudflare (free plan) for DNS and HTTPS.
+- Host: Cloudflare Pages, connected to GitHub repo yogeshwaran-venkatesan/custom-software-developers-website (branch main). Every push to main redeploys.
+- Static output: angular.json `outputMode: "static"`; all routes prerendered (app.routes.server.ts `RenderMode.Prerender`). src/server.ts is no longer used.
+- `npm run build` = `ng build` + scripts/postbuild.mjs, which turns `route/index.html` into `route.html` (Cloudflare serves it at `/route`, matching canonical URLs) and keeps the prerendered `/404` page as `404.html` (real 404 status).
+- Cloudflare Pages settings: build command `npm run build`, output directory `dist/csd-web/browser`, env `NODE_VERSION` = 22.
+- public/_headers: security headers + 1-year cache for hashed JS/CSS/media.
 
 ## SEO
 - SeoService: per-route title/description, canonical, robots, Open Graph + Twitter card (og-image.jpg 1200x630), og:locale en_IN.

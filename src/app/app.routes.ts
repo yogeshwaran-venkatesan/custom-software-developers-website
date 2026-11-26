@@ -63,6 +63,13 @@ export const routes: Routes = [
     path: 'terms', loadComponent: legal, title: 'Terms | Custom Software Developers',
     data: { doc: 'terms',  kicker: 'Legal', heading: 'Terms of use', intro: 'The terms that apply to this website and our services.', description: 'Terms of use of Custom Software Developers.' },
   },
+  // Prerendered as /404 and copied to 404.html by scripts/postbuild.mjs, so the host returns it with a 404 status.
+  {
+    path: '404',
+    loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound),
+    title: 'Page not found | Custom Software Developers',
+    data: { description: 'This page could not be found.', noindex: true },
+  },
   {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound),
