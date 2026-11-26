@@ -44,7 +44,7 @@ export class SeoService {
       this.meta.updateTag({ property: 'og:image', content: image });
       this.meta.updateTag({ property: 'og:image:width', content: '1200' });
       this.meta.updateTag({ property: 'og:image:height', content: '630' });
-      this.meta.updateTag({ property: 'og:image:alt', content: 'Custom Software Developers: You dream it. We engineer it.' });
+      this.meta.updateTag({ property: 'og:image:alt', content: 'Custom Software Developers: You focus on growth. We handle the code.' });
       this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
       this.meta.updateTag({ name: 'twitter:title', content: title });
       this.meta.updateTag({ name: 'twitter:description', content: desc });

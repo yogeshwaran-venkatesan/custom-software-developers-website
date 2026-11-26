@@ -81,7 +81,8 @@ npx serve dist/csd-web/browser       # preview the static build locally (clean U
 - Footer: "If you can imagine it, we can build it." (SITE.footerSlogan; written in site-footer.html with "we can build it." in amber, kept on one line).
 
 ## Hosting and domain
-- Domain: customsoftwaredevelopers.in (bought at Spaceship, 26 Nov 2026). Nameservers point to Cloudflare (free plan) for DNS and HTTPS.
+- Domain: customsoftwaredevelopers.in (bought at Spaceship, 26 Nov 2026). Nameservers dayana/earl.ns.cloudflare.com (Cloudflare free plan) for DNS and HTTPS. LIVE since 26 Nov 2026.
+- Cloudflare DNS: apex = Worker custom domain; `www` AAAA 100:: (proxied) + Redirect Rule www → apex (301, query string kept); Always Use HTTPS on; TXT `v=spf1 -all` and `_dmarc` `v=DMARC1; p=reject;` (no email on this domain yet; change these if business email is added).
 - Host: Cloudflare Workers (static assets, free), connected to GitHub repo yogeshwaran-venkatesan/custom-software-developers-website (branch main). Every push to main redeploys.
 - Static output: angular.json `outputMode: "static"`; all routes prerendered (app.routes.server.ts `RenderMode.Prerender`). src/server.ts is no longer used.
 - `npm run build` = `ng build` + scripts/postbuild.mjs, which turns `route/index.html` into `route.html` (Cloudflare serves it at `/route`, matching canonical URLs) and keeps the prerendered `/404` page as `404.html` (real 404 status).
@@ -90,6 +91,8 @@ npx serve dist/csd-web/browser       # preview the static build locally (clean U
 - vercel.json: same setup for the Vercel test deployment (custom-software-developers-website.vercel.app): framework preset off (static), cleanUrls so `about.html` serves at `/about`, 404.html for unknown URLs, same headers. Vercel Hobby is non-commercial, so it is for testing only; production goes on Cloudflare Pages.
 
 ## SEO
+- Share image public/img/og-image.jpg (1200x630) regenerated 26 Nov 2026 with the new heading; og:image:alt matches. Google Business Profile logo (720x720) and cover (1080x608) are in D:\New Folder\Claude outputs\business-profile (not part of the site).
+- Google Search Console: Domain property customsoftwaredevelopers.in verified (26 Nov 2026) via Cloudflare auto TXT record `google-site-verification=...` (never delete it). Sitemap https://customsoftwaredevelopers.in/sitemap.xml submitted: Success, 13 pages.
 - SeoService: per-route title/description, canonical, robots, Open Graph + Twitter card (og-image.jpg 1200x630), og:locale en_IN.
 - JSON-LD: ProfessionalService + WebSite (site-wide); FAQPage (shared faq component); Service + BreadcrumbList (service detail). Page-level blocks are cleared on NavigationStart.
 - index.html: lang en-IN, theme-color, SVG + ico favicons. sitemap.xml / robots.txt use SITE.siteUrl (customsoftwaredevelopers.in — confirm domain before launch).
@@ -98,7 +101,7 @@ npx serve dist/csd-web/browser       # preview the static build locally (clean U
 - Incremental hydration (`provideClientHydration(withIncrementalHydration())`). Home: hero panel and services arc `hydrate on idle`; three-acts, live preview, work, scope receipt `hydrate on viewport`.
 - Hero text intro is transform-only CSS (no opacity fade) so LCP text paints at once.
 - MotionService loads GSAP/ScrollTrigger/Lenis on the first scroll, wheel, touch, click or key press.
-- Lighthouse (local static build, 26 Nov 2026): mobile ~80–88 / 100 / 100 / 100 (LCP 0.8 s, CLS 0); desktop 100 / 100 / 100 / 100. Remaining mobile TBT is Angular start-up of main.js.
+- PageSpeed Insights on the live site (https://customsoftwaredevelopers.in, 26 Nov 2026): mobile 100 / 100 / 100 / 100, desktop 96 / 100 / 100 / 100. Agentic Browsing: mobile 2/2, desktop 1/2 (to check).
 
 ## Design tokens
 Canvas #0D0C0B (60%), cards #141312 with 1px #262422 hairlines, radius 24px. Paper #F5F2EB with ink #121110 (receipt, phone screen) (30%).
