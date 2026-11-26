@@ -86,7 +86,8 @@ npx serve dist/csd-web/browser       # preview the static build locally (clean U
 - Static output: angular.json `outputMode: "static"`; all routes prerendered (app.routes.server.ts `RenderMode.Prerender`). src/server.ts is no longer used.
 - `npm run build` = `ng build` + scripts/postbuild.mjs, which turns `route/index.html` into `route.html` (Cloudflare serves it at `/route`, matching canonical URLs) and keeps the prerendered `/404` page as `404.html` (real 404 status).
 - Cloudflare Pages settings: build command `npm run build`, output directory `dist/csd-web/browser`, env `NODE_VERSION` = 22.
-- public/_headers: security headers + 1-year cache for hashed JS/CSS/media.
+- public/_headers: security headers + 1-year cache for hashed JS/CSS/media (Cloudflare Pages).
+- vercel.json: same setup for the Vercel test deployment (custom-software-developers-website.vercel.app): framework preset off (static), cleanUrls so `about.html` serves at `/about`, 404.html for unknown URLs, same headers. Vercel Hobby is non-commercial, so it is for testing only; production goes on Cloudflare Pages.
 
 ## SEO
 - SeoService: per-route title/description, canonical, robots, Open Graph + Twitter card (og-image.jpg 1200x630), og:locale en_IN.
