@@ -1,0 +1,14 @@
+// Cloudflare Workers (static assets) config for customsoftwaredevelopers.in.
+// Build: `npm run build` (ng build + scripts/postbuild.mjs). Deploy: `npx wrangler deploy`.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "custom-software-developers-website",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist/csd-web/browser",
+    // Unknown URLs get the prerendered 404.html with a 404 status.
+    "not_found_handling": "404-page",
+    // about.html is served at /about (no trailing slash), matching canonical URLs.
+    "html_handling": "drop-trailing-slash"
+  }
+}
