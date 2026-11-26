@@ -26,7 +26,7 @@ src/app/shared/signature-line/     "CUSTOM SOFTWARE DEVELOPERS" (solid, or [holl
 src/app/layout/site-header/        transparent over the home hero, glass after 24px scroll; nav in a floating pill; "Get a quote"; burger < 1024px
 src/app/layout/mobile-bar/         sticky bottom bar < 768px: WhatsApp (only when number set) + Get quote
 src/app/layout/site-footer/        sitemap (incl. Seettu Pro), contact, legal, full-width HOLLOW signature line (W A M E S solid amber)
-src/app/pages/home/                hero: toned-down photo bg, kicker pill, "You dream it. We engineer it.", tag, sub, CTAs
+src/app/pages/home/                hero: toned-down photo bg, kicker pill, "You focus on growth. We handle the code." (word rise), terminal quotes, sub, CTAs
                                    ("Bring Your Idea to Light" -> #scope, "Explore Live Demos" -> #preview), trust row, hero panel,
                                    HOLLOW signature line (scope hero; W A M E S solid amber overlay), fixed right-edge scroll rail (top / services / live demos / scope)
   hero-panel/      W A M E S tab panel: per tab a short config "code" file + a floating result card (website, AI call, app tracking,
@@ -53,6 +53,7 @@ src/app/pages/home/                hero: toned-down photo bg, kicker pill, "You 
   (unused now: hero-scene/ (Three.js), quote-builder/, shared/hollow-name/ — safe to delete)
 src/app/shared/page-hero/, cta-band/, faq/  inner-page building blocks (dark theme)
 src/app/pages/...                  services, service-detail (W A M E S + saas), work, seettu, process, about, contact, legal, not-found
+src/app/pages/about/about-page.ts  hero "A small team. Serious experience." (5+ years, ERP, plugins on latest versions, AI agents) → "Built by developers who have done this before" + 4 highlight cards (HIGHLIGHTS) → "What we do best" list of 5 (STRENGTHS, generic: no industries or named integrations, by owner request) → How we think → Stack (+ current-versions note) → details strip
 public/img/                        photos, Seettu Pro images, logo files
 ```
 
