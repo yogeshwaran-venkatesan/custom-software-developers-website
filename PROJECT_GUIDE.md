@@ -107,7 +107,7 @@ npx serve dist/csd-web/browser       # preview the static build locally (clean U
 Canvas #0D0C0B (60%), cards #141312 with 1px #262422 hairlines, radius 24px. Paper #F5F2EB with ink #121110 (receipt, phone screen) (30%).
 Accent warm amber #F2A33A, hover #FFB54F, text on amber #1A1205 (10%). Text #FFFFFF, secondary #CDCBCA, tertiary #8F8B86.
 Legacy token names (--c-char, --c-alab, --c-ink, --c-line…) map to the dark theme so older components still work.
-Logo: new {/C} mark in the site palette (26 Nov 2026): public/img/logo-mark.svg, also favicon.ico, apple-touch-icon.png, img/logo-mark-96.png. The old neon logo-mark.png / logo-full.jpg (OG image) remain; replace logo-full.jpg with a new share image.
+Logo: new {/C} mark in the site palette (26 Nov 2026): public/img/logo-mark.svg, also favicon.ico, apple-touch-icon.png, img/logo-mark-96.png. Owner decided (26 Nov 2026) to keep the mark as {/C (no closing brace). The old neon logo-mark.png / logo-full.jpg are unused leftovers; the share image is public/img/og-image.jpg.
 
 ## Milestones
 1. ✅ Scaffold, fonts, tokens, header, mobile bar, footer, routes, SEO, sitemap/robots, approved static hero.
@@ -126,7 +126,7 @@ Logo: new {/C} mark in the site palette (26 Nov 2026): public/img/logo-mark.svg,
 ## Open items
 - Confirm the receipt's indicative week ranges (scope-receipt.ts MODULES).
 - Delete unused components (hero-scene, quote-builder, hollow-name) and, if Three.js is no longer used, remove `three` from package.json.
-- WhatsApp number: set `SITE.whatsappNumber` (buttons stay hidden until set).
+- WhatsApp number: owner is getting a new business SIM; then set `SITE.whatsappNumber` (digits with country code, e.g. 91XXXXXXXXXX) and update the Google Business Profile phone too. Buttons stay hidden until set.
 - Final domain: `SITE.siteUrl`, robots.txt, sitemap.xml (currently customsoftwaredevelopers.in as an assumption).
 - Real projects for the Work section.
 - Legal pages: plain-language drafts dated 25 Nov 2026; get them reviewed.
