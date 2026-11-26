@@ -1,0 +1,108 @@
+<section class="pd" [class.pd--flush]="!showHead()" id="products" [attr.aria-labelledby]="showHead() ? 'pd-title' : null" [attr.aria-label]="showHead() ? null : 'Seettu Pro apps'">
+  @if (showHead()) {
+  <div class="pd__head">
+    <div>
+      <p class="pd__k">Our own product</p>
+      <h2 id="pd-title">Seettu Pro<i class="sq"></i></h2>
+    </div>
+    <p class="pd__lead">
+      The savings-scheme app for shops that run Deepavali and festival seettu. Members track and pay their monthly
+      card on their phone; the shop runs every scheme from the counter computer. Built and run by us.
+    </p>
+  </div>
+  }
+
+  <!-- Mobile apps: member and shop owner -->
+  <div class="switch" role="tablist" aria-label="Seettu Pro mobile apps">
+    @for (s of shots; track s.id) {
+      <button type="button" role="tab" [attr.aria-selected]="view() === s.id" aria-controls="pd-shot" (click)="view.set(s.id)">{{ s.label }}</button>
+    }
+  </div>
+  <figure class="shot" id="pd-shot" role="tabpanel">
+    @for (s of shots; track s.id) {
+      <picture [hidden]="view() !== s.id">
+        <source [srcset]="'/img/' + s.img + '.webp'" type="image/webp" />
+        <img [src]="'/img/' + s.img + '.png'" width="1800" height="1384" loading="lazy" [alt]="s.alt" />
+      </picture>
+    }
+    <figcaption>{{ shot().caption }}</figcaption>
+  </figure>
+
+  <!-- Desktop: shop counter dashboard -->
+  <div class="desk">
+    <div class="desk__copy">
+      <p class="pd__k">Shop counter dashboard</p>
+      <h3>Run every scheme from one screen.</h3>
+      <p>Collections, overdue members, receipts and handovers in one place. Staff sign in on the counter computer by scanning a QR code with their phone, no passwords to share.</p>
+      <ul>
+        <li>Today's collections and pending dues</li>
+        <li>Scan a member's card QR to open it instantly</li>
+        <li>Receipts and reminders in Tamil or English</li>
+      </ul>
+    </div>
+
+    <div class="laptop" role="img" aria-label="Illustration of the Seettu Pro shop dashboard showing collections and member dues">
+      <div class="laptop__scr">
+        <div class="db">
+          <aside class="db__side" aria-hidden="true">
+            <b>Seettu Pro</b>
+            <span class="on">Dashboard</span><span>Schemes</span><span>Members</span><span>Collections</span><span>Handover</span><span>Settings</span>
+          </aside>
+          <div class="db__main">
+            <div class="db__top"><b>Lakshmi Stores</b><span>Deepavali 2027 · 12 months</span></div>
+            <div class="db__kpis">
+              <div><span>Collected today</span><b>₹18,500</b></div>
+              <div><span>This month</span><b>₹2,41,000</b></div>
+              <div><span>Overdue members</span><b class="red">14</b></div>
+              <div><span>Active cards</span><b>486</b></div>
+            </div>
+            <table>
+              <thead><tr><th>Member</th><th>Card</th><th>Paid</th><th>Status</th></tr></thead>
+              <tbody>
+                @for (d of dues; track d.card) {
+                  <tr>
+                    <td>{{ d.name }}</td><td class="mono-c">{{ d.card }}</td>
+                    <td><span class="bar"><i [style.width.%]="d.paid / 12 * 100"></i></span> {{ d.paid }}/12</td>
+                    <td><span class="tag" [class.tag--late]="d.late">{{ d.due }}</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="laptop__base" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- Scrollytelling: the phone frame stays put while features scroll past (desktop) -->
+  <div class="story">
+    <div class="story__frame" aria-hidden="true">
+      <div class="story__view">
+        @for (im of ['seettu-pro-member', 'seettu-pro-owner']; track im) {
+          <picture [class.on]="focus().img === im">
+            <source [srcset]="'/img/' + im + '.webp'" type="image/webp" />
+            <img [src]="'/img/' + im + '.png'" width="1800" height="1384" alt="" loading="lazy"
+              [style.transform-origin]="(focus().fx * 100) + '% ' + (focus().fy * 100) + '%'"
+              [style.transform]="'translate(' + (50 - focus().fx * 100) + '%, ' + (50 - focus().fy * 100) + '%) scale(1.75)'" />
+          </picture>
+        }
+      </div>
+      <p class="story__count mono">{{ (feat() + 1).toString().padStart(2, '0') }} / {{ features.length.toString().padStart(2, '0') }} · {{ focus().img === 'seettu-pro-owner' ? 'Shop owner app' : 'Member app' }}</p>
+    </div>
+    <ul class="feat story__list">
+      @for (f of features; track f.title; let i = $index) {
+        <li [class.on]="feat() === i"><span class="mono n">{{ (i + 1).toString().padStart(2, '0') }}</span><h3>{{ f.title }}</h3><p>{{ f.body }}</p></li>
+      }
+    </ul>
+  </div>
+
+  <div class="pd__cta">
+    <p>Two ways to get it: join the shared <b>Seettu Pro</b> app on a monthly plan, or get your own app with your shop's name and logo.</p>
+    <div class="row">
+      <a class="btn btn--accent" [href]="demoMail">Book a Seettu Pro demo</a>
+      <a class="btn btn--ghost" routerLink="/contact">Ask about pricing</a>
+    </div>
+  </div>
+  <p class="pd__note">Dashboard shown with sample data.</p>
+</section>

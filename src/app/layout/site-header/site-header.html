@@ -1,0 +1,40 @@
+<header class="hdr" [class.hdr--solid]="solid()">
+  <div class="hdr__in">
+    <app-brand-logo [slogan]="slogan" />
+
+    <nav class="hdr__nav" aria-label="Main">
+      @for (link of nav; track link.path) {
+        <a [routerLink]="link.path" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: false }">{{ link.label }}</a>
+      }
+    </nav>
+
+    <a class="btn btn--accent btn--sm hdr__cta" routerLink="/contact">Get a quote</a>
+
+    <button
+      #menuBtn
+      type="button"
+      class="hdr__burger"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="mobile-menu"
+      [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      (click)="toggleMenu()"
+    >
+      <span class="bars" [class.bars--x]="menuOpen()" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+@if (menuOpen()) {
+  <div class="menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu">
+    <nav aria-label="Mobile">
+      @for (link of nav; track link.path; let first = $first) {
+        @if (first) {
+          <a #firstLink [routerLink]="link.path">{{ link.label }}</a>
+        } @else {
+          <a [routerLink]="link.path">{{ link.label }}</a>
+        }
+      }
+    </nav>
+    <a class="btn btn--accent menu__cta" routerLink="/contact">Get a quote</a>
+  </div>
+}

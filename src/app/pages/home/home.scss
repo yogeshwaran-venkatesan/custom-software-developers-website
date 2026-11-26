@@ -1,0 +1,120 @@
+.hero {
+  position: relative;
+  min-height: max(100svh, 820px);
+  background: var(--c-bg);
+  color: #fff;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--header-h);
+}
+/* Background photo, deeply toned down so the copy and panel stay crisp */
+.hero__bg {
+  position: absolute; inset: 0; z-index: -2;
+  img { width: 100%; height: 100%; object-fit: cover; object-position: 30% center; opacity: .35; filter: grayscale(.4) contrast(1.05); }
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(48% 55% at 78% 45%, rgba(242, 163, 58, .22), transparent 70%),
+    linear-gradient(90deg, rgba(13, 12, 11, .96) 0%, rgba(13, 12, 11, .82) 45%, rgba(13, 12, 11, .7) 100%),
+    linear-gradient(0deg, var(--c-bg) 0%, transparent 30%);
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(60% 70% at 72% 40%, #000, transparent 75%);
+  mask-image: radial-gradient(60% 70% at 72% 40%, #000, transparent 75%);
+}
+
+.hero__main {
+  flex: 1;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.04fr); gap: clamp(32px, 4vw, 64px); align-items: center;
+  padding: clamp(24px, 5vh, 56px) var(--pad-x) 24px;
+}
+.hero__kicker {
+  display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 999px;
+  border: 1px solid var(--c-border); background: rgba(20, 19, 18, .7); font-size: 13.5px; color: var(--c-muted);
+  b { display: inline-grid; place-items: center; height: 24px; padding: 0 9px; border-radius: 999px; background: var(--c-accent-soft); color: var(--c-accent); font: 600 12px var(--f-body); }
+}
+.hero__title { margin: 22px 0 16px; display: grid; gap: 4px; font-weight: inherit; letter-spacing: normal; }
+.hero__title { container-type: inline-size; }
+/* Sized so the longest phrase ("You want it automated.") always fits on one line: no wrapping, no layout shift. */
+/* Heading lines never wrap: font sizes are capped by the h1 width (cqi), so the layout never shifts. */
+.hl { display: block; white-space: nowrap; }
+.hl--a { font: italic 400 min(clamp(3rem, 1rem + 5vw, 5.8rem), 12.4cqi)/1.02 var(--f-serif); letter-spacing: -.01em; }
+.hl--b { font: 800 min(clamp(2.3rem, .8rem + 4vw, 4.4rem), 10.3cqi)/1.02 var(--f-disp); letter-spacing: -.035em; }
+/* Word mask: padding keeps italic overhang and descenders (g) inside the clip. */
+/* Word mask: padding keeps italic overhang and descenders (g) inside the clip, negative margins cancel it in layout. */
+.w { display: inline-block; overflow: clip; vertical-align: top; padding: .04em .14em .3em .08em; margin: -.04em -.14em -.3em -.08em; }
+.w__i {
+  display: inline-block; animation: word-in .95s cubic-bezier(.2, .8, .2, 1) both;
+  animation-delay: calc(.12s + var(--i) * 75ms);
+}
+.w__i--hi {
+  background: linear-gradient(95deg, #fff 5%, #ffd79a 55%, var(--c-accent) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* The gradient only paints inside the box: extend it under the g's tail and the italic overhang. */
+  padding: 0 .1em .3em 0; margin: 0 -.1em -.3em 0;
+}
+@keyframes word-in { from { transform: translateY(105%) rotate(5deg); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .w__i { animation: none; } }
+/* Blinking block cursor (terminal line). */
+.caret {
+  display: inline-block; width: .09em; height: .74em; margin-left: .05em; vertical-align: -.04em;
+  background: var(--c-accent); box-shadow: 0 0 .18em rgba(242, 163, 58, .55); animation: blink 1s steps(1) infinite;
+}
+.caret--still { animation: none; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .caret { display: none; } }
+.term {
+  max-width: 34rem; margin: 6px 0 20px; padding: .7em .95em .8em; border-radius: 12px;
+  background: #141312; border: 1px solid #262422; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03);
+}
+.term__tag { margin: 0 0 6px; font: 500 12px/1.4 var(--f-mono); color: var(--c-dim); letter-spacing: .01em; }
+.term__line {
+  display: grid; margin: 0; font: 600 clamp(1.02rem, .92rem + .45vw, 1.3rem)/1.45 var(--f-mono);
+  letter-spacing: -.01em; color: #fff;
+  > * { grid-area: 1 / 1; }
+  .caret { height: .95em; width: .5em; vertical-align: -.15em; margin-left: .08em; box-shadow: none; }
+}
+.term__ghost { visibility: hidden; }
+.hero__sub { color: var(--c-muted); max-width: 52ch; font-size: clamp(1rem, .95rem + .25vw, 1.15rem); line-height: 1.65; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.hero__trust {
+  list-style: none; margin: 30px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 14px; color: var(--c-muted);
+  li { display: flex; align-items: center; gap: 8px; }
+  li::before { content: '✓'; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: rgba(255, 255, 255, .08); color: #fff; font-size: 11px; }
+}
+
+.hero__sig { margin: 8px var(--pad-x) clamp(24px, 4vh, 40px); }
+
+.rail {
+  position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 3;
+  display: grid; gap: 4px;
+  a { display: grid; place-items: center; width: 24px; height: 24px; }
+  a::before { content: ''; width: 5px; height: 5px; border-radius: 999px; background: rgba(255, 255, 255, .3); transition: height .35s var(--ease-out), background-color .35s; }
+  a.on::before { height: 22px; background: var(--c-accent); }
+  a:hover::before { background: #fff; }
+}
+
+@media (max-width: 1023px) {
+  .hero { min-height: 0; }
+  .hero__main { grid-template-columns: minmax(0, 1fr); padding-top: 40px; gap: 48px; }
+  .rail { display: none; }
+  .hero__sig { margin-top: 24px; }
+}
+
+/* One orchestrated load sequence (CSS, plays at first paint; the global reduced-motion rule turns it off). */
+/* Text rises without fading, so it is visible (and counted for LCP) from the first frame. */
+@keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes lift { from { transform: translateY(22px); } to { transform: none; } }
+.hero__kicker { animation: rise .9s var(--ease-out) both; }
+.term { animation: rise .8s var(--ease-out) .55s both; }
+.hero__sub { animation: lift .9s var(--ease-out) .26s both; }
+.hero__cta { animation: rise .9s var(--ease-out) .46s both; }
+.hero__trust { animation: rise .9s var(--ease-out) .54s both; }
+.hero__panel { animation: rise 1.2s var(--ease-out) .45s both; }
+.hero__sig { animation: rise 1.2s var(--ease-out) .6s both; }

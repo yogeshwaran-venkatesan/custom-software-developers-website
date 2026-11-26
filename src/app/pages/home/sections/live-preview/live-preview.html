@@ -1,0 +1,147 @@
+<section class="lp" id="preview" aria-labelledby="lp-title">
+  <div class="lp__head">
+    <h2 id="lp-title">Try what we build before you hire us<i class="sq"></i></h2>
+    <p>Working previews of the systems we deliver. Switch tabs, press the buttons, and see how they behave.</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Live previews">
+    @for (t of tabs; track t.id; let i = $index) {
+      <button
+        type="button" role="tab" [id]="'lp-tab-' + t.id"
+        [attr.aria-selected]="tab() === t.id" [attr.aria-controls]="'lp-panel-' + t.id"
+        [attr.tabindex]="tab() === t.id ? 0 : -1"
+        (click)="select(t.id)" (keydown)="onTabKey($event, i)"
+      >{{ t.label }}</button>
+    }
+  </div>
+
+  @switch (tab()) {
+    @case ('erp') {
+      <div class="pv" role="tabpanel" id="lp-panel-erp" aria-labelledby="lp-tab-erp">
+        <div class="box erp">
+          <div class="box__top">
+            <span>Counter 2, new invoice</span>
+            <div class="row">
+              <button type="button" class="btn btn--accent btn--sm" (click)="scan()">Scan barcode</button>
+              <button type="button" class="btn btn--ghost btn--sm" (click)="clearInvoice()">Clear</button>
+            </div>
+          </div>
+          <table>
+            <caption class="sr-only">Invoice lines</caption>
+            <thead><tr><th scope="col">Item</th><th scope="col">Barcode</th><th scope="col" class="r">Qty</th><th scope="col" class="r">Amount (₹)</th></tr></thead>
+            <tbody>
+              @for (l of lines(); track l.code) {
+                <tr><td>{{ l.name }}</td><td class="code">{{ l.code }}</td><td class="r">{{ l.qty }}</td><td class="r">{{ l.qty * l.rate | number }}</td></tr>
+              } @empty {
+                <tr><td colspan="4" class="empty">No items yet. Press "Scan barcode" to add one.</td></tr>
+              }
+            </tbody>
+          </table>
+          <dl class="totals">
+            <div><dt>Subtotal</dt><dd>₹{{ subtotal() | number }}</dd></div>
+            <div><dt>GST 18%</dt><dd>₹{{ gst() | number }}</dd></div>
+            <div class="grand"><dt>Total</dt><dd>₹{{ total() | number }}</dd></div>
+          </dl>
+        </div>
+        <div class="box kpis">
+          <p class="kpi"><span>Today's sales</span><b>₹4,82,300</b></p>
+          <p class="kpi"><span>Low-stock items</span><b>7</b></p>
+          <ul class="stock" aria-label="Stock levels">
+            @for (st of stock; track st.name) { <li [class.low]="st.low"><span>{{ st.name }}</span><b>{{ st.qty }}</b></li> }
+          </ul>
+          <div class="chart" aria-label="Sales for the last 7 days" role="img">
+            @for (b of bars; track $index) { <i [style.height.%]="b"></i> }
+          </div>
+          <p class="note">Three branches, synced live.</p>
+        </div>
+      </div>
+    }
+    @case ('voice') {
+      <div class="pv" role="tabpanel" id="lp-panel-voice" aria-labelledby="lp-tab-voice">
+        <div class="box call">
+          <div class="box__top">
+            <span>Outbound call, payment reminder</span>
+            <span class="live" [class.live--on]="playing()"><i></i>{{ playing() ? 'Live' : 'Ready' }}</span>
+          </div>
+          <div class="wave" [class.wave--on]="playing()" aria-hidden="true">
+            @for (h of wave; track $index) { <i [style.height.%]="h" [style.animation-delay.ms]="$index * 40"></i> }
+          </div>
+          <ol class="tr" aria-live="polite">
+            @for (m of shown(); track $index) {
+              <li [class.me]="m.who === 'Customer'"><small>{{ m.who }}</small>{{ m.text }}</li>
+            }
+          </ol>
+          <div class="evt">
+            @if (scheduled()) {
+              <span><b>Follow-up scheduled</b> for Monday, 10:00, synced to billing</span>
+            } @else {
+              <span>Call in progress…</span>
+            }
+            <button type="button" class="btn btn--accent btn--sm" (click)="playCall()" [disabled]="playing()">
+              {{ playing() ? 'Playing…' : 'Play sample call' }}
+            </button>
+          </div>
+        </div>
+        <div class="box log">
+          <div class="box__top"><span>Today's reminder calls</span><span>4 of 26</span></div>
+          <ul>
+            @for (c of calls; track c.who) {
+              <li><span class="who">{{ c.who }}<small>Due {{ c.due }}</small></span><span class="st" [class]="'st st--' + c.tone">{{ c.status }}</span></li>
+            }
+          </ul>
+          <p class="note">Every call is logged, transcribed and linked to the customer's ledger.</p>
+        </div>
+      </div>
+    }
+    @case ('mobile') {
+      <div class="pv pv--mobile" role="tabpanel" id="lp-panel-mobile" aria-labelledby="lp-tab-mobile">
+        <div class="phone">
+          <div class="phone__scr">
+            @switch (screen()) {
+              @case ('order') {
+                <div class="app">
+                  <p class="app__h">Masala dosa combo</p>
+                  <div class="app__img" aria-hidden="true"></div>
+                  <p class="app__p">₹{{ 180 * qty() }}</p>
+                  <div class="stepper">
+                    <button type="button" aria-label="Decrease quantity" (click)="qty.set(qty() > 1 ? qty() - 1 : 1)">−</button>
+                    <span aria-live="polite">{{ qty() }}</span>
+                    <button type="button" aria-label="Increase quantity" (click)="qty.set(qty() + 1)">+</button>
+                  </div>
+                  <button type="button" class="app__btn" (click)="screen.set('pay')">Place order</button>
+                </div>
+              }
+              @case ('pay') {
+                <div class="app">
+                  <p class="app__h">Pay ₹{{ 180 * qty() }}</p>
+                  <p class="app__p2">UPI · Card · Cash on delivery</p>
+                  <button type="button" class="app__btn" (click)="screen.set('track')">Pay with UPI</button>
+                </div>
+              }
+              @case ('track') {
+                <div class="app">
+                  <p class="app__h">On the way</p>
+                  <ol class="steps">
+                    <li class="done">Order confirmed</li><li class="done">Being prepared</li><li class="now">Out for delivery</li><li>Delivered</li>
+                  </ol>
+                  <button type="button" class="app__btn app__btn--ghost" (click)="screen.set('order'); qty.set(1)">Order again</button>
+                </div>
+              }
+            }
+            <nav class="app__nav" aria-label="App screens">
+              <button type="button" [class.on]="screen() === 'order'" (click)="screen.set('order')">Order</button>
+              <button type="button" [class.on]="screen() === 'pay'" (click)="screen.set('pay')">Pay</button>
+              <button type="button" [class.on]="screen() === 'track'" (click)="screen.set('track')">Track</button>
+            </nav>
+          </div>
+        </div>
+        <div class="box mtext">
+          <h3>One system: app for customers, portal for your team</h3>
+          <p>Customers order and track on the iOS and Android app; your staff and field teams use the web portal on the same data. Tap through the phone to try the flow.</p>
+          <ul><li>Works offline and syncs later</li><li>UPI, cards and cash on delivery</li><li>Web portal with roles for staff and branches</li><li>Push notifications at every step</li></ul>
+        </div>
+      </div>
+    }
+  }
+  <p class="lp__note">Sample data. Names and amounts are illustrative.</p>
+</section>

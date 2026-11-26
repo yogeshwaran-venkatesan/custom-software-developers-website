@@ -1,0 +1,45 @@
+<footer class="ft">
+  <div class="ft__grid">
+    <div class="ft__brand">
+      <app-brand-logo />
+      <p class="ft__slogan">If you can imagine it, <em>we can build it.</em></p>
+      <p>Bespoke websites, AI solutions, mobile apps, ERPs and SaaS, built around your workflow. You own 100% of the code.</p>
+      <p class="mono ft__reg">{{ site.registration }}</p>
+    </div>
+
+    <nav aria-label="Services">
+      <h2 class="mono">Services</h2>
+      <a routerLink="/services">All services</a>
+      @for (s of services; track s.path) {
+        <a [routerLink]="s.path">{{ s.label }}</a>
+      }
+    </nav>
+
+    <nav aria-label="Company">
+      <h2 class="mono">Company</h2>
+      @for (l of company; track l.path) {
+        <a [routerLink]="l.path">{{ l.label }}</a>
+      }
+    </nav>
+
+    <div>
+      <h2 class="mono">Contact</h2>
+      <a [href]="'mailto:' + site.email" class="ft__mail">{{ site.email }}</a>
+      @if (wa) {
+        <a [href]="wa" target="_blank" rel="noopener">WhatsApp us</a>
+      }
+      <a routerLink="/contact" class="btn btn--accent btn--sm ft__cta">Start a project</a>
+    </div>
+  </div>
+
+  <app-signature-line class="ft__name" scope="footer" [hollow]="true" />
+
+  <div class="ft__legal">
+    <span>© {{ year }} {{ site.name }}</span>
+    <nav aria-label="Legal">
+      @for (l of legal; track l.path) {
+        <a [routerLink]="l.path">{{ l.label }}</a>
+      }
+    </nav>
+  </div>
+</footer>

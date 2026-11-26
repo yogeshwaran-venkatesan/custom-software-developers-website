@@ -1,0 +1,70 @@
+<section class="pr" id="process" aria-labelledby="pr-title">
+  <div class="pr__head">
+    <h2 id="pr-title">Four steps, no surprises<i class="sq"></i></h2>
+    <p class="mono pr__count" aria-hidden="true">Step {{ active() + 1 }} / {{ steps.length }}</p>
+  </div>
+
+  <div class="pr__body">
+    <div class="wrap-steps">
+      <span class="track" aria-hidden="true"><span class="fill" [style.--p]="progress()"></span></span>
+      <ol class="steps">
+        @for (s of steps; track s.title; let i = $index) {
+          <li [class.is-on]="active() === i" [class.is-done]="progress() >= i / (steps.length - 1) - 0.001">
+            <button type="button" (click)="go(i)" [attr.aria-current]="active() === i ? 'step' : null">
+              <span class="num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+              <span class="tx"><span class="h3">{{ s.title }}</span><span class="p">{{ s.body }}</span></span>
+            </button>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <!-- Desktop stage: one small scene per step -->
+    <div class="stage" aria-hidden="true">
+      <div class="stage__bar"><i></i><i></i><i></i><span class="mono">project.{{ ['blueprint', 'design', 'sprints', 'deploy'][active()] }}</span></div>
+
+      <div class="scene sc-1" [class.on]="active() === 0">
+        <p class="mono t" style="--i:0">requirement-blueprint.pdf</p>
+        <div class="doc">
+          @for (w of [92, 78, 85, 60, 88, 70]; track $index) { <span class="ln" [style.width.%]="w" [style.--i]="$index + 1"></span> }
+        </div>
+        <ul class="facts">
+          <li style="--i:7"><b>6</b> user roles</li><li style="--i:8"><b>14</b> screens</li><li style="--i:9"><b>23</b> business rules</li>
+        </ul>
+        <p class="stamp" style="--i:10">Scope agreed ✓</p>
+      </div>
+
+      <div class="scene sc-2" [class.on]="active() === 1">
+        <div class="wf">
+          <span class="b top" style="--i:0"></span>
+          <span class="b side" style="--i:1"></span>
+          <span class="b c1" style="--i:2"></span><span class="b c2" style="--i:3"></span><span class="b c3" style="--i:4"></span>
+          <span class="b tbl" style="--i:5"></span>
+        </div>
+        <div class="arch">
+          <span style="--i:6">App</span><i style="--i:7"></i><span style="--i:8">API</span><i style="--i:9"></i><span style="--i:10">Database</span>
+        </div>
+      </div>
+
+      <div class="scene sc-3" [class.on]="active() === 2">
+        <div class="wk">
+          @for (w of weeks; track w) {
+            <div class="col" [style.--i]="w"><span class="mono">W{{ w }}</span><span class="pill" [style.height.%]="20 + w * 13">v0.{{ w }}</span></div>
+          }
+        </div>
+        <div class="phone" style="--i:8"><span class="mono">Live build</span><b>v0.6</b><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="scene sc-4" [class.on]="active() === 3">
+        <ul class="term">
+          <li style="--i:0"><span class="ok">✓</span> build passed</li>
+          <li style="--i:1"><span class="ok">✓</span> deployed to cloud · your account</li>
+          <li style="--i:2"><span class="ok">✓</span> team trained</li>
+          <li style="--i:3"><span class="ok">✓</span> handover: source code, database, logins</li>
+          <li style="--i:4" class="cur">AMC support active<span class="blink">_</span></li>
+        </ul>
+        <div class="live" style="--i:5"><span class="dot"></span> Live</div>
+      </div>
+    </div>
+  </div>
+</section>

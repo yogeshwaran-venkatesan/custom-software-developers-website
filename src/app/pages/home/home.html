@@ -1,0 +1,66 @@
+<section class="hero" aria-labelledby="hero-title">
+  <picture class="hero__bg" aria-hidden="true">
+    <source srcset="/img/studio-voice.webp" type="image/webp" />
+    <img src="/img/studio-voice.jpg" alt="" width="1376" height="768" fetchpriority="high" />
+  </picture>
+
+  <div class="hero__main">
+    <div class="hero__in">
+      <p class="hero__kicker"><b>100%</b> source code and IP ownership</p>
+      <!-- Each word rises out of its own mask on load; the text itself is plain h1 text for crawlers. -->
+      <h1 id="hero-title" class="hero__title">
+        <span class="hl hl--a">
+          @for (w of lineA; track $index) {<span class="w"><span class="w__i" [style.--i]="$index" [class.w__i--hi]="w === 'growth.'">{{ w }}</span></span>{{ ' ' }}}
+        </span>
+        <span class="hl hl--b">
+          @for (w of lineB; track $index) {<span class="w"><span class="w__i" [style.--i]="$index + lineA.length">{{ w }}</span></span>{{ ' ' }}}
+        </span>
+      </h1>
+      <!-- Live terminal line: starts printing once the heading has landed. All quotes are in the sr-only text. -->
+      <div class="term">
+        <p class="term__tag" aria-hidden="true">// studio.mission — live_compile.ts</p>
+        <p class="sr-only">{{ quotes.join(' ') }}</p>
+        <p class="term__line" aria-hidden="true">
+          <!-- Invisible copies of every quote share the cell, so the box is always as tall as the longest one. -->
+          @for (q of quotes; track q) { <span class="term__ghost">{{ q }}<i class="caret"></i></span> }
+          <span class="term__live">{{ quote() }}<i class="caret" [class.caret--still]="quoteTyping()"></i></span>
+        </p>
+      </div>
+      <p class="hero__sub">
+        We take full responsibility for the code, the integration and the scale, turning your raw concepts
+        into fast, custom web platforms, mobile apps and automated AI solutions.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--accent" href="#scope" (click)="scrollTo('scope', $event)">
+          Bring Your Idea to Light
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="#preview" (click)="scrollTo('preview', $event)">Explore Live Demos</a>
+      </div>
+      <ul class="hero__trust">
+        <li>No SaaS lock-in</li><li>Milestone payments</li><li>AMC after launch</li>
+      </ul>
+    </div>
+
+    @defer (hydrate on idle) { <app-hero-panel class="hero__panel" /> }
+  </div>
+
+  <app-signature-line class="hero__sig" scope="hero" [hollow]="true" />
+
+  <nav class="rail" aria-label="Page sections">
+    @for (s of rail; track s.id; let i = $index) {
+      <a [href]="'#' + s.id" [class.on]="railOn() === i" [attr.aria-label]="s.label" [attr.aria-current]="railOn() === i ? 'true' : null"
+        (click)="scrollTo(s.id, $event)"></a>
+    }
+  </nav>
+</section>
+
+<!-- Below-the-fold sections hydrate later (incremental hydration) to keep the first load light.
+     The services arc hydrates on idle so its scroll effect is ready before the visitor reaches it. -->
+@defer (hydrate on idle) { <app-services-arc /> }
+@defer (hydrate on viewport) { <app-three-acts /> }
+@defer (hydrate on viewport) { <app-live-preview /> }
+@if (showWork) {
+  @defer (hydrate on viewport) { <app-work-preview /> }
+}
+@defer (hydrate on viewport) { <app-scope-receipt /> }

@@ -1,0 +1,50 @@
+<section class="qt" id="quote" aria-labelledby="qt-title">
+  <picture class="qt__bg" aria-hidden="true">
+    <source srcset="/img/office-night.webp" type="image/webp" />
+    <img src="/img/office-night.jpg" alt="" width="1376" height="768" loading="lazy" />
+  </picture>
+
+  <ul class="pillars">
+    @for (p of pillars; track p.title) {
+      <li><h3>{{ p.title }}</h3><p>{{ p.body }}</p></li>
+    }
+  </ul>
+
+  <div class="qb">
+    <div>
+      <h2 id="qt-title">Tell us what to build<i class="sq"></i></h2>
+      <p class="lead">Pick what you need, write a line or two, and send it the way you prefer. We reply with questions and an estimate.</p>
+      <p class="direct">Or write to <a [href]="'mailto:' + site.email">{{ site.email }}</a></p>
+    </div>
+
+    <form class="card" (submit)="$event.preventDefault()" novalidate>
+      <fieldset>
+        <legend>What do you need?</legend>
+        <div class="chips">
+          @for (s of scopes; track s) {
+            <button type="button" [attr.aria-pressed]="picked().includes(s)" (click)="toggle(s)">{{ s }}</button>
+          }
+        </div>
+        <p class="err" aria-live="polite">{{ scopeError() }}</p>
+      </fieldset>
+
+      <label for="qt-brief">Your requirement</label>
+      <textarea id="qt-brief" rows="4" maxlength="1500"
+        placeholder="e.g. Billing with barcode invoicing for 3 branches, plus an AI caller for payment reminders."
+        [value]="brief()" (input)="onInput($event, 'brief')"
+        [attr.aria-invalid]="!!briefError()" aria-describedby="qt-brief-err"></textarea>
+      <p class="err" id="qt-brief-err" aria-live="polite">{{ briefError() }}</p>
+
+      <label for="qt-name">Your name <span class="opt">(optional)</span></label>
+      <input id="qt-name" type="text" autocomplete="name" maxlength="80" [value]="name()" (input)="onInput($event, 'name')" />
+
+      <div class="btns">
+        @if (hasWhatsapp) {
+          <button type="button" class="btn btn--wa" (click)="sendWhatsapp()">Send via WhatsApp</button>
+        }
+        <a class="btn" [class.btn--accent]="!hasWhatsapp" [class.btn--ghost]="hasWhatsapp" [href]="emailHref()" (click)="sendEmail($event)">Email project brief</a>
+      </div>
+      <p class="hint">Opens your {{ hasWhatsapp ? 'WhatsApp or ' : '' }}mail app with the brief filled in. Nothing is sent until you press send there.</p>
+    </form>
+  </div>
+</section>

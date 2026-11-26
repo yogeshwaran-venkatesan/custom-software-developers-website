@@ -1,0 +1,35 @@
+<section class="svc" id="services" aria-labelledby="svc-title">
+  <div class="svc__head">
+    <h2 id="svc-title" class="h-sec"><span class="keep">Five core strengths.</span> <span class="keep">No limit to what we build.</span></h2>
+    <p>Each highlighted letter in our name stands for one of our core services. Pick one to see how it connects with the rest of your business. Need something beyond these five? We build that too.</p>
+  </div>
+
+  <div class="arc" role="tablist" aria-label="Services">
+    @for (s of services; track s.letter; let i = $index) {
+      <button type="button" role="tab" class="card" [id]="'svc-tab-' + s.letter"
+        [class.is-on]="active() === i" [attr.aria-selected]="active() === i" aria-controls="svc-panel"
+        [attr.tabindex]="active() === i ? 0 : -1" [style.--i]="i"
+        (click)="active.set(i)" (keydown)="onKey($event, i)">
+        <span class="card__l" [attr.data-arc]="s.letter" aria-hidden="true">{{ s.letter }}</span>
+        <span class="card__n">{{ s.short }}</span>
+        <span class="card__h">{{ s.headline }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="panel" id="svc-panel" role="tabpanel" [attr.aria-labelledby]="'svc-tab-' + current().letter" aria-live="polite">
+    @for (c of [current()]; track c.letter) {
+      <div class="panel__in">
+        <div>
+          <p class="panel__k"><b>{{ c.letter }}</b>{{ c.name }}</p>
+          <h3>How it connects</h3>
+          <p class="panel__t">{{ c.connects }}</p>
+        </div>
+        <div>
+          <ul class="list">@for (d of c.deliverables; track d) { <li>{{ d }}</li> }</ul>
+          <a class="btn btn--accent btn--sm" [routerLink]="c.path">Explore {{ c.short }}</a>
+        </div>
+      </div>
+    }
+  </div>
+</section>
